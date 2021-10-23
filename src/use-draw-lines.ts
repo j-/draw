@@ -2,12 +2,6 @@ import { RefObject, useEffect } from 'react';
 import { ContiguousLine } from './contiguous-line';
 import { Point } from './point';
 
-declare global {
-  export interface PointerEvent {
-    getCoalescedEvents?: () => PointerEvent[];
-  }
-}
-
 export type UseDrawLinesOptions = {
   ref: RefObject<Pick<SVGSVGElement, 'getBoundingClientRect' | 'addEventListener' | 'removeEventListener' | 'viewBox'>>,
   startLine: (id: number, line: ContiguousLine) => void;
@@ -151,7 +145,7 @@ export const useDrawLines: UseDrawLines = ({
       }
     };
 
-    let pollRectTimer = -1;
+    let pollRectTimer: NodeJS.Timer;
     if (pollRectInterval !== undefined && pollRectInterval > 0) {
       pollRectTimer = setInterval(() => {
         clientRect = container.getBoundingClientRect();

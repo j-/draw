@@ -9,12 +9,6 @@ import { LineStyles, isSameStyle, Drawing, StyledLine } from './drawing';
 import ColorButton from './ColorButton';
 import './App.css';
 
-declare global {
-  export interface PointerEvent {
-    getCoalescedEvents?: () => PointerEvent[];
-  }
-}
-
 const App: React.FC = () => {
   const containerRef = useRef<SVGSVGElement>(null);
   const [currentLines, setCurrentLines] = useState<Map<number, ContiguousLine>>(new Map());
