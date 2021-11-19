@@ -81,7 +81,7 @@ const App: React.FC = () => {
       return newLines;
     });
   }, []);
-  
+
   /** Called when the pointer no longer captures movement. */
   const endLine = useCallback((id: number, line: ContiguousLine) => {
     setCurrentLines((currentLines) => {
@@ -135,27 +135,43 @@ const App: React.FC = () => {
   });
 
   const hues = 7;
-  
+
   return (
     <div className="App">
       <button type="button" onClick={undo}>Undo</button>
       <button type="button" onClick={clear}>Clear</button>
 
-      <button type="button" value="5" onClick={handleUpdateStrokeWidth}>Brush size: 5</button>
-      <button type="button" value="10" onClick={handleUpdateStrokeWidth}>Brush size: 10</button>
-      <button type="button" value="15" onClick={handleUpdateStrokeWidth}>Brush size: 15</button>
-      <button type="button" value="20" onClick={handleUpdateStrokeWidth}>Brush size: 20</button>
+      <button type="button" value="5" onClick={handleUpdateStrokeWidth}>
+        Brush size: 5
+      </button>
+      <button type="button" value="10" onClick={handleUpdateStrokeWidth}>
+        Brush size: 10
+      </button>
+      <button type="button" value="15" onClick={handleUpdateStrokeWidth}>
+        Brush size: 15
+      </button>
+      <button type="button" value="20" onClick={handleUpdateStrokeWidth}>
+        Brush size: 20
+      </button>
 
       <br />
 
       <ColorButton value="white" onClick={handleUpdateStrokeColor} />
       {Array.from({ length: hues }).map((_, i) => (
-        <ColorButton key={i} value={`hsl(${360 / hues * i}, 80%, 70%)`} onClick={handleUpdateStrokeColor} />
+        <ColorButton
+          key={i}
+          value={`hsl(${360 / hues * i}, 80%, 70%)`}
+          onClick={handleUpdateStrokeColor}
+        />
       ))}
       <br />
       <ColorButton value="black" onClick={handleUpdateStrokeColor} />
       {Array.from({ length: hues }).map((_, i) => (
-        <ColorButton key={i} value={`hsl(${360 / hues * i}, 80%, 50%)`} onClick={handleUpdateStrokeColor} />
+        <ColorButton
+          key={i}
+          value={`hsl(${360 / hues * i}, 80%, 50%)`}
+          onClick={handleUpdateStrokeColor}
+        />
       ))}
 
       <h2>Composite line</h2>
@@ -167,14 +183,27 @@ const App: React.FC = () => {
         width={500}
         height={500}
         style={{
-          cursor: generateCursorProperty(currentStyles.strokeWidth, currentStyles.strokeColor),
+          cursor: generateCursorProperty(
+            currentStyles.strokeWidth,
+            currentStyles.strokeColor,
+          ),
         }}
       >
         {drawing.map((styledLine, i) => (
-          <CompositeLinePath key={i} line={styledLine[1]} stroke={styledLine[0].strokeColor} strokeWidth={styledLine[0].strokeWidth} />
+          <CompositeLinePath
+            key={i}
+            line={styledLine[1]}
+            stroke={styledLine[0].strokeColor}
+            strokeWidth={styledLine[0].strokeWidth}
+          />
         ))}
         {Array.from(currentLines.entries(), ([id, line]) => (
-          <ContiguousLinePath key={id} line={line} stroke={currentStyles.strokeColor} strokeWidth={currentStyles.strokeWidth} />
+          <ContiguousLinePath
+            key={id}
+            line={line}
+            stroke={currentStyles.strokeColor}
+            strokeWidth={currentStyles.strokeWidth}
+          />
         ))}
       </svg>
     </div>
