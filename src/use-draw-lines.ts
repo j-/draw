@@ -27,6 +27,8 @@ export const useDrawLines: UseDrawLines = ({
     const container = ref.current;
     if (!container) return;
 
+    let report: string[] = [];
+
     let clientRect = container.getBoundingClientRect();
     const viewBoxRect = container.viewBox.baseVal;
 
@@ -86,6 +88,7 @@ export const useDrawLines: UseDrawLines = ({
         e.getCoalescedEvents().map(getPoint) :
         [getPoint(e)];
       currentLine.push(...points);
+      report.push(`${e.type} ${points}`);
       doUpdateLine(-1, currentLine);
     };
 
@@ -96,6 +99,9 @@ export const useDrawLines: UseDrawLines = ({
       const currentLine = currentLines.get(-1);
       // Line was not initialized. Exit.
       if (!currentLine) return;
+      report.push(e.type);
+      console.log(report);
+      report = [];
       doEndLine(-1, currentLine);
     };
 
@@ -106,6 +112,7 @@ export const useDrawLines: UseDrawLines = ({
       if (e.pointerType === 'mouse' && (e.buttons & 1) !== 1) return;
       e.preventDefault();
       const currentLine = [getPoint(e)];
+      report.push(`${e.type} ${currentLine}`);
       doStartLine(-1, currentLine);
       window.addEventListener('pointermove', handlePointerMove);
       window.addEventListener('pointerup', handlePointerUp);
