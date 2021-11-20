@@ -34,11 +34,11 @@ export const useDrawLines: UseDrawLines = ({
 
     const getPoint = (e: PointerEvent | Touch): Point => [
       Math.round(
-        (e.clientX - clientRect.left + window.scrollX + viewBoxRect.x) *
+        (e.clientX - clientRect.left + viewBoxRect.x) *
         viewBoxRect.width / clientRect.width
       ),
       Math.round(
-        (e.clientY - clientRect.top + window.scrollY + viewBoxRect.y) *
+        (e.clientY - clientRect.top + viewBoxRect.y) *
         viewBoxRect.height / clientRect.height
       ),
     ];
