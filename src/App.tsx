@@ -190,6 +190,7 @@ const App: React.FC = () => {
         }}
       >
         <path d="M-200-300v600h50v-600h50v600h50v-600h50v600h50v-600h50v600h50v-600h50v600M-300-200h600v50h-600v50h600v50h-600v50h600v50h-600v50h600v50h-600v50h600" stroke="grey" fill="none" stroke-dasharray="4 1" />
+        <path d="M-250,0h500M0-250v500" stroke="grey" strokeWidth={2} fill="none" />
         {drawing.map((styledLine, i) => (
           <CompositeLinePath
             key={i}
