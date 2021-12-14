@@ -156,7 +156,7 @@ export const useDrawLines: UseDrawLines = ({
     if (pollRectInterval !== undefined && pollRectInterval > 0) {
       pollRectTimer = setInterval(() => {
         clientRect = container.getBoundingClientRect();
-      });
+      }, 500);
     }
 
     container.addEventListener('pointerdown', handlePointerDown);
