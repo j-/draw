@@ -47,7 +47,7 @@ const App: React.FC = () => {
   }, []);
 
   /** Convert drawing to SVG and initiate download. */
-  const download = useCallback(() => {
+  const download = useCallback(async () => {
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svg.setAttributeNS(null, 'viewBox', '-250 -250 500 500');
     for (const styledLine of drawing) {
@@ -66,12 +66,29 @@ const App: React.FC = () => {
       type: 'image/svg+xml',
     });
     const svgURL = URL.createObjectURL(svgBlob);
-    const anchor = document.createElement('a');
-    anchor.href = svgURL;
-    anchor.download = 'drawing.svg';
-    document.body.appendChild(anchor);
-    anchor.click();
-    document.body.removeChild(anchor);
+    const fileName = 'drawing.svg';
+    if (typeof window.showSaveFilePicker === 'function') {
+      try {
+        const options: any = {
+          suggestedName: fileName,
+        };
+        const handle = await window.showSaveFilePicker(options);
+        const writable = await handle.createWritable();
+        await writable.write(svgBlob);
+        await writable.close();
+      } catch (err) {
+        const { name } = (err as any);
+        // Ignore AbortError, raised when cancelling save action.
+        if (name !== 'AbortError') throw err;
+      }
+    } else {
+      const anchor = document.createElement('a');
+      anchor.href = svgURL;
+      anchor.download = fileName;
+      document.body.appendChild(anchor);
+      anchor.click();
+      document.body.removeChild(anchor);
+    }
     URL.revokeObjectURL(svgURL);
   }, [drawing]);
 
