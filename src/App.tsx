@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState } from 'react';
 import { ContiguousLine } from './contiguous-line';
-import { CompositeLine } from './composite-line';
+import { buildCompositeLinePathDefinition, CompositeLine } from './composite-line';
 import { generateCursorProperty } from './cursor';
 import { useDrawLines } from './use-draw-lines';
 import ContiguousLinePath from './ContiguousLinePath';
@@ -45,6 +45,35 @@ const App: React.FC = () => {
   const clear = useCallback(() => {
     setDrawing([]);
   }, []);
+
+  /** Convert drawing to SVG and initiate download. */
+  const download = useCallback(() => {
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttributeNS(null, 'viewBox', '-250 -250 500 500');
+    for (const styledLine of drawing) {
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttributeNS(null, 'd', buildCompositeLinePathDefinition(styledLine[1]));
+      path.setAttributeNS(null, 'fill', 'transparent');
+      path.setAttributeNS(null, 'stroke-linecap', 'round');
+      path.setAttributeNS(null, 'stroke-linejoin', 'round');
+      path.setAttributeNS(null, 'stroke-width', String(styledLine[0].strokeWidth));
+      path.setAttributeNS(null, 'stroke', styledLine[0].strokeColor);
+      svg.appendChild(path);
+    }
+    const serializer = new XMLSerializer();
+    const serialized = serializer.serializeToString(svg);
+    const svgBlob = new Blob([serialized], {
+      type: 'image/svg+xml',
+    });
+    const svgURL = URL.createObjectURL(svgBlob);
+    const anchor = document.createElement('a');
+    anchor.href = svgURL;
+    anchor.download = 'drawing.svg';
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
+    URL.revokeObjectURL(svgURL);
+  }, [drawing]);
 
   /** Called when changing brush size. */
   const handleUpdateStrokeColor = useCallback<React.MouseEventHandler<HTMLButtonElement>>((e) => {
@@ -140,6 +169,7 @@ const App: React.FC = () => {
     <div className="App">
       <button type="button" onClick={undo}>Undo</button>
       <button type="button" onClick={clear}>Clear</button>
+      <button type="button" onClick={download}>Download</button>
 
       <button type="button" value="5" onClick={handleUpdateStrokeWidth}>
         Brush size: 5
