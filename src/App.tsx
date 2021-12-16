@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState } from 'react';
 import { ContiguousLine } from './contiguous-line';
-import { buildCompositeLinePathDefinition, CompositeLine } from './composite-line';
+import { buildCompositeLinePathDefinitionAbsolute, CompositeLine } from './composite-line';
 import { generateCursorProperty } from './cursor';
 import { useDrawLines } from './use-draw-lines';
 import ContiguousLinePath from './ContiguousLinePath';
@@ -52,7 +52,7 @@ const App: React.FC = () => {
     svg.setAttributeNS(null, 'viewBox', '-250 -250 500 500');
     for (const styledLine of drawing) {
       const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      path.setAttributeNS(null, 'd', buildCompositeLinePathDefinition(styledLine[1]));
+      path.setAttributeNS(null, 'd', buildCompositeLinePathDefinitionAbsolute(styledLine[1]));
       path.setAttributeNS(null, 'fill', 'transparent');
       path.setAttributeNS(null, 'stroke-linecap', 'round');
       path.setAttributeNS(null, 'stroke-linejoin', 'round');

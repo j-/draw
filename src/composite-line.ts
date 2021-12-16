@@ -1,10 +1,10 @@
-import { ContiguousLine, buildContiguousLinePathDefinition } from './contiguous-line';
+import { ContiguousLine, buildContiguousLinePathDefinitionAbsolute } from './contiguous-line';
 
 /** A composite line is a collection of contiguous lines of the same style. */
 export type CompositeLine = ContiguousLine[];
 
-export const buildCompositeLinePathDefinition = (lines: CompositeLine): string => (
+export const buildCompositeLinePathDefinitionAbsolute = (lines: CompositeLine): string => (
   lines
-    .map(buildContiguousLinePathDefinition)
+    .map(buildContiguousLinePathDefinitionAbsolute)
     .join(' ')
 );

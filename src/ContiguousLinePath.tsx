@@ -1,4 +1,4 @@
-import { buildContiguousLinePathDefinition, ContiguousLine } from "./contiguous-line"
+import { buildContiguousLinePathDefinitionAbsolute, ContiguousLine } from "./contiguous-line"
 
 type Props = {
   line: ContiguousLine;
@@ -9,7 +9,7 @@ type Props = {
 const ContiguousLinePath: React.FC<Props> = ({ line, stroke, strokeWidth }) => {
   return (
     <path
-      d={buildContiguousLinePathDefinition(line)}
+      d={buildContiguousLinePathDefinitionAbsolute(line)}
       stroke={stroke}
       fill="transparent"
       strokeWidth={strokeWidth}

@@ -1,4 +1,4 @@
-import { buildCompositeLinePathDefinition, CompositeLine } from "./composite-line"
+import { buildCompositeLinePathDefinitionAbsolute, CompositeLine } from "./composite-line"
 
 type Props = {
   line: CompositeLine;
@@ -9,7 +9,7 @@ type Props = {
 const CompositeLinePath: React.FC<Props> = ({ line, stroke, strokeWidth }) => {
   return (
     <path
-      d={buildCompositeLinePathDefinition(line)}
+      d={buildCompositeLinePathDefinitionAbsolute(line)}
       stroke={stroke}
       fill="transparent"
       strokeWidth={strokeWidth}
