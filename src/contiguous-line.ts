@@ -17,3 +17,33 @@ export const buildContiguousLinePathDefinitionAbsolute = (points: ContiguousLine
     ))
     .join(' ')
 );
+
+export const buildContiguousLinePathDefinitionRelative = (points: ContiguousLine): string => {
+  if (points.length < 2) {
+    return '';
+  }
+
+  const result: ContiguousLine = [points[0]];
+
+  for (let i = points.length - 1; i >= 1; i--) {
+    const currentPoint = points[i];
+    const lastPoint = points[i - 1];
+    const relativePoint: Point = [
+      currentPoint[0] - lastPoint[0],
+      currentPoint[1] - lastPoint[1],
+    ];
+    result[i] = relativePoint;
+  }
+
+  return result
+    .map(([x, y]) => `${x},${y}`)
+    .map((coords, i) => (
+      // Move to these coords
+      i === 0 ? `M ${coords}` :
+      // Line to these coords
+      i === 1 ? `l ${coords}` :
+      // Repeat last instruction
+      coords
+    ))
+    .join(' ');
+};
