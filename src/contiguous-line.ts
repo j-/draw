@@ -4,6 +4,7 @@ import { Point } from './point';
 export type ContiguousLine = Point[];
 
 export const buildContiguousLinePathDefinitionAbsolute = (points: ContiguousLine): string => (
+  points.length < 2 ? '' :
   points
     .map(([x, y]) => `${x},${y}`)
     .map((coords, i) => (

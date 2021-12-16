@@ -14,9 +14,9 @@ describe('buildContiguousLinePathDefinitionAbsolute()', () => {
     expect(actual).toEqual('');
   });
 
-  it('returns a move instruction if given one coord', () => {
+  it('returns an empty string if given one coord', () => {
     const actual = buildContiguousLinePathDefinitionAbsolute(onePointLine);
-    expect(actual).toEqual('M 20,30');
+    expect(actual).toEqual('');
   });
 
   it('returns a line if given two coords', () => {
