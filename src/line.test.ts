@@ -36,4 +36,9 @@ describe('simplifyLine()', () => {
     const actual = simplifyLine([[20, 30], [30, 30], [40, 20], [40, 20]]);
     expect(actual).toEqual([[20, 30], [30, 30], [40, 20]]);
   });
+
+  it('removes redundant points along a line', () => {
+    const actual = simplifyLine([[0, 0], [5, 5], [10, 10], [20, 20]]);
+    expect(actual).toEqual([[0, 0], [20, 20]]);
+  });
 });
