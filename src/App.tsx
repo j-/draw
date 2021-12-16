@@ -8,6 +8,7 @@ import CompositeLinePath from './CompositeLinePath';
 import { LineStyles, isSameStyle, Drawing, StyledLine } from './drawing';
 import ColorButton from './ColorButton';
 import './App.css';
+import { simplifyLine } from './line';
 
 const App: React.FC = () => {
   const containerRef = useRef<SVGSVGElement>(null);
@@ -52,7 +53,9 @@ const App: React.FC = () => {
     svg.setAttributeNS(null, 'viewBox', '-250 -250 500 500');
     for (const styledLine of drawing) {
       const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      path.setAttributeNS(null, 'd', buildCompositeLinePathDefinitionRelative(styledLine[1]));
+      const compositeLine = styledLine[1];
+      const simpleLine = compositeLine.map(simplifyLine);
+      path.setAttributeNS(null, 'd', buildCompositeLinePathDefinitionRelative(simpleLine));
       path.setAttributeNS(null, 'fill', 'transparent');
       path.setAttributeNS(null, 'stroke-linecap', 'round');
       path.setAttributeNS(null, 'stroke-linejoin', 'round');

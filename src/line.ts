@@ -1,6 +1,6 @@
 import { ContiguousLine } from './contiguous-line';
 
-export const simplifyLine = (line: ContiguousLine) => {
+export const simplifyLine = (line: ContiguousLine): ContiguousLine => {
   if (line.length < 2) {
     return [];
   }
