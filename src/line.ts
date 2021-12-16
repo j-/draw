@@ -1,21 +1,13 @@
-export type LineToPathOptions = {
-  strokeWidth?: number | string;
-};
+import { ContiguousLine } from './contiguous-line';
 
-export const lineToPath = (
-  d: string,
-  {
-    strokeWidth
-  }: LineToPathOptions = {},
-): SVGPathElement => {
-  const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-  path.setAttribute('d', d);
-  path.setAttribute('stroke', 'black');
-  path.setAttribute('fill', 'transparent');
-  if (strokeWidth != null) {
-    path.setAttribute('stroke-width', `${strokeWidth}`);
+export const simplifyLine = (line: ContiguousLine) => {
+  if (line.length < 2) {
+    return [];
   }
-  path.setAttribute('stroke-linejoin', 'round');
-  path.setAttribute('stroke-linecap', 'round');
-  return path;
+
+  return line.filter((point, i, arr) => (
+    i === arr.length - 1 ||
+    point[0] !== arr[i + 1][0] ||
+    point[1] !== arr[i + 1][1]
+  ));
 };
