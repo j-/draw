@@ -41,4 +41,10 @@ describe('simplifyLine()', () => {
     const actual = simplifyLine([[0, 0], [5, 5], [10, 10], [20, 20]]);
     expect(actual).toEqual([[0, 0], [20, 20]]);
   });
+
+  it.skip('simplifies a complex line', () => {
+    const complexLine: ContiguousLine = [[-4, -5], [-4, -5], [-4, -5], [-4, -4], [-4, -3], [-4, -3], [-4, -2], [-4, -2], [-4, -1], [-4, 0], [-4, 1], [-4, 2], [-3, 2], [-2, 3], [-2, 3], [-1, 3], [-1, 3], [0, 3], [0, 3], [1, 3], [2, 3], [3, 3], [3, 3], [3, 3], [4, 3], [4, 3], [5, 3], [5, 3], [5, 3], [5, 2], [5, 2], [5, 1], [5, 1], [5, -3], [5, -4]];
+    const actual = simplifyLine(complexLine);
+    expect(actual).toEqual([[-4, -5], [-4, -2], [-3, 2], [-2, 3], [5, 3], [5, -4]]);
+  });
 });
