@@ -10,11 +10,11 @@ export type CompositeLine = ContiguousLine[];
 export const buildCompositeLinePathDefinitionAbsolute = (lines: CompositeLine): string => (
   lines
     .map(buildContiguousLinePathDefinitionAbsolute)
-    .join(' ')
+    .join('')
 );
 
 export const buildCompositeLinePathDefinitionRelative = (lines: CompositeLine): string => (
   lines
     .map(buildContiguousLinePathDefinitionRelative)
-    .join(' ')
+    .join('')
 );

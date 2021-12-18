@@ -6,16 +6,16 @@ export type ContiguousLine = Point[];
 export const buildContiguousLinePathDefinitionAbsolute = (points: ContiguousLine): string => (
   points.length < 2 ? '' :
   points
-    .map(([x, y]) => `${x},${y}`)
-    .map((coords, i) => (
-      // Move to these coords
-      i === 0 ? `M ${coords}` :
-      // Line to these coords
-      i === 1 ? `L ${coords}` :
-      // Repeat last instruction
-      coords
-    ))
-    .join(' ')
+    .map(([x, y], i) => {
+      const coords = y < 0 ? `${x}${y}` : `${x} ${y}`;
+      return (
+        // Move to these coords
+        i === 0 ? `M${coords}` :
+        // Repeat last instruction
+        x < 0 ? coords : ` ${coords}`
+      );
+    })
+    .join('')
 );
 
 export const buildContiguousLinePathDefinitionRelative = (points: ContiguousLine): string => {
@@ -36,14 +36,16 @@ export const buildContiguousLinePathDefinitionRelative = (points: ContiguousLine
   }
 
   return result
-    .map(([x, y]) => `${x},${y}`)
-    .map((coords, i) => (
-      // Move to these coords
-      i === 0 ? `M ${coords}` :
-      // Line to these coords
-      i === 1 ? `l ${coords}` :
-      // Repeat last instruction
-      coords
-    ))
-    .join(' ');
+    .map(([x, y], i) => {
+      const coords = y < 0 ? `${x}${y}` : `${x} ${y}`;
+      return (
+        // Move to these coords
+        i === 0 ? `M${coords}` :
+        // Line to these coords
+        i === 1 ? `l${coords}` :
+        // Repeat last instruction
+        x < 0 ? coords : ` ${coords}`
+      );
+    })
+    .join('');
 };
