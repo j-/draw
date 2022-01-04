@@ -3,12 +3,11 @@ import { ContiguousLine } from './contiguous-line';
 import { Point } from './point';
 
 export type UseDrawLinesOptions = {
-  ref: RefObject<Pick<SVGSVGElement, 'getBoundingClientRect' | 'addEventListener' | 'removeEventListener' | 'viewBox'>>,
+  ref: RefObject<Element & Pick<SVGSVGElement, 'getBoundingClientRect' | 'addEventListener' | 'removeEventListener' | 'viewBox'>>,
   startLine: (id: number, line: ContiguousLine) => void;
   updateLine: (id: number, line: ContiguousLine) => void;
   endLine: (id: number, line: ContiguousLine) => void;
   cancelLine: (id: number) => void;
-  pollRectInterval?: number;
 };
 
 export type UseDrawLines = {
@@ -21,7 +20,6 @@ export const useDrawLines: UseDrawLines = ({
   updateLine,
   endLine,
   cancelLine,
-  pollRectInterval,
 }) => {
   useEffect(() => {
     const container = ref.current;
@@ -152,12 +150,10 @@ export const useDrawLines: UseDrawLines = ({
       }
     };
 
-    let pollRectTimer: NodeJS.Timer;
-    if (pollRectInterval !== undefined && pollRectInterval > 0) {
-      pollRectTimer = setInterval(() => {
-        clientRect = container.getBoundingClientRect();
-      }, pollRectInterval);
-    }
+    const observer = new ResizeObserver(() => {
+      clientRect = container.getBoundingClientRect();
+    });
+    observer.observe(container);
 
     container.addEventListener('pointerdown', handlePointerDown);
     container.addEventListener('touchstart', handleTouchStart);
@@ -173,7 +169,7 @@ export const useDrawLines: UseDrawLines = ({
       window.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('touchend', handleTouchEnd);
       window.removeEventListener('touchcancel', handleTouchCancel);
-      clearInterval(pollRectTimer);
+      observer.unobserve(container);
     };
-  }, [ref, startLine, updateLine, endLine, cancelLine, pollRectInterval]);
+  }, [ref, startLine, updateLine, endLine, cancelLine]);
 };

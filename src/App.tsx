@@ -178,7 +178,6 @@ const App: React.FC = () => {
     updateLine,
     endLine,
     cancelLine,
-    pollRectInterval: 1000,
   });
 
   const hues = 7;
