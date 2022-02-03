@@ -184,42 +184,50 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
-      <button type="button" onClick={undo}>Undo</button>
-      <button type="button" onClick={clear}>Clear</button>
-      <button type="button" onClick={download}>Download</button>
+      <div>
+        <button type="button" onClick={undo}>Undo</button>
+        <button type="button" onClick={clear}>Clear</button>
+        <button type="button" onClick={download}>Download</button>
+      </div>
 
-      <button type="button" value="5" onClick={handleUpdateStrokeWidth}>
-        Brush size: 5
-      </button>
-      <button type="button" value="10" onClick={handleUpdateStrokeWidth}>
-        Brush size: 10
-      </button>
-      <button type="button" value="15" onClick={handleUpdateStrokeWidth}>
-        Brush size: 15
-      </button>
-      <button type="button" value="20" onClick={handleUpdateStrokeWidth}>
-        Brush size: 20
-      </button>
+      <div>
+        <button type="button" value="5" onClick={handleUpdateStrokeWidth}>
+          Size 5
+        </button>
+        <button type="button" value="10" onClick={handleUpdateStrokeWidth}>
+          Size 10
+        </button>
+        <button type="button" value="15" onClick={handleUpdateStrokeWidth}>
+          Size 15
+        </button>
+        <button type="button" value="20" onClick={handleUpdateStrokeWidth}>
+          Size 20
+        </button>
+      </div>
 
       <br />
 
-      <ColorButton value="white" onClick={handleUpdateStrokeColor} />
-      {Array.from({ length: hues }).map((_, i) => (
-        <ColorButton
-          key={i}
-          value={`hsl(${360 / hues * i}, 80%, 70%)`}
-          onClick={handleUpdateStrokeColor}
-        />
-      ))}
+      <div>
+        <ColorButton value="white" onClick={handleUpdateStrokeColor} />
+        {Array.from({ length: hues }).map((_, i) => (
+          <ColorButton
+            key={i}
+            value={`hsl(${360 / hues * i}, 80%, 70%)`}
+            onClick={handleUpdateStrokeColor}
+          />
+        ))}
+        <br />
+        <ColorButton value="black" onClick={handleUpdateStrokeColor} />
+        {Array.from({ length: hues }).map((_, i) => (
+          <ColorButton
+            key={i}
+            value={`hsl(${360 / hues * i}, 80%, 50%)`}
+            onClick={handleUpdateStrokeColor}
+          />
+        ))}
+      </div>
+
       <br />
-      <ColorButton value="black" onClick={handleUpdateStrokeColor} />
-      {Array.from({ length: hues }).map((_, i) => (
-        <ColorButton
-          key={i}
-          value={`hsl(${360 / hues * i}, 80%, 50%)`}
-          onClick={handleUpdateStrokeColor}
-        />
-      ))}
 
       <svg
         ref={containerRef}

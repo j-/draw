@@ -2,4 +2,5 @@
   user-select: none;
   touch-action: none;
   overscroll-behavior: none;
+  outline: 2px inset #09c;
 }
