@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { ContiguousLine } from './contiguous-line';
 import { buildCompositeLinePathDefinitionRelative, CompositeLine } from './composite-line';
 import { generateCursorProperty } from './cursor';
@@ -9,14 +9,39 @@ import { LineStyles, isSameStyle, Drawing, StyledLine } from './drawing';
 import ColorButton from './ColorButton';
 import './App.css';
 
+const DRAWING_STORAGE_KEY = 'draw/v1/drawing';
+const STYLES_STORAGE_KEY = 'draw/v1/styles';
+
+function getItem <T>(key: string, defaultValue: T) {
+  const item = window.localStorage.getItem(key);
+  if (!item) return defaultValue;
+  try {
+    return JSON.parse(item);
+  } catch (err) {
+    return defaultValue;
+  }
+}
+
+function setItem <T>(key: string, value: T) {
+  const item = JSON.stringify(value);
+  try {
+    window.localStorage.setItem(key, item);
+  } catch (err) {
+    // Ignore
+  }
+}
+
+const initialDrawing = getItem<Drawing>(DRAWING_STORAGE_KEY, []);
+const initialStyles = getItem<LineStyles>(STYLES_STORAGE_KEY, {
+  strokeColor: 'black',
+  strokeWidth: 5,
+});
+
 const App: React.FC = () => {
   const containerRef = useRef<SVGSVGElement>(null);
   const [currentLines, setCurrentLines] = useState<Map<number, ContiguousLine>>(new Map());
-  const [drawing, setDrawing] = useState<Drawing>([]);
-  const [currentStyles, setStyles] = useState<LineStyles>({
-    strokeColor: 'black',
-    strokeWidth: 5,
-  });
+  const [drawing, setDrawing] = useState<Drawing>(initialDrawing);
+  const [currentStyles, setStyles] = useState<LineStyles>(initialStyles);
 
   /** Pop the last line off the stack. */
   const undo = useCallback(() => {
@@ -44,6 +69,7 @@ const App: React.FC = () => {
   /** Clear all lines. */
   const clear = useCallback(() => {
     setDrawing([]);
+    window.localStorage.removeItem(DRAWING_STORAGE_KEY);
   }, []);
 
   /** Convert drawing to SVG and initiate download. */
@@ -179,6 +205,14 @@ const App: React.FC = () => {
     endLine,
     cancelLine,
   });
+
+  useEffect(() => {
+    setItem(DRAWING_STORAGE_KEY, drawing);
+  }, [drawing]);
+
+  useEffect(() => {
+    setItem(STYLES_STORAGE_KEY, currentStyles);
+  }, [currentStyles]);
 
   const hues = 7;
 
