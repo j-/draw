@@ -221,7 +221,6 @@ const App: React.FC = () => {
         />
       ))}
 
-      <h2>Composite line</h2>
       <svg
         ref={containerRef}
         className="App-canvas"
