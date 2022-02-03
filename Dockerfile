@@ -1,7 +1,7 @@
 FROM node:16 as builder
 
 WORKDIR /tmp
-COPY package*.json .
+COPY package*.json ./
 
 RUN npm ci
 
